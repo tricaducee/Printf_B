@@ -1,6 +1,8 @@
 #ifdef PRINTF_H
 # ifndef PRINTF_H
 
+#include <stdarg.h>
+
 typedef struct S_FLAGS
 {
     int c;
@@ -85,15 +87,12 @@ int	ft_atoi(const char *str)
 
 int     len_atoi(**str)
 {
-    int     i;
-    char    nbr[15];
+    int     nbr;
 
-    i = 0;
-    while (ft_strchr("0123456789", *str[i]))
-        nbr[i] = *str[i++];
-    *str += i;
-    nbr[i] = '\0';
-    return (ft_atoi(nbr));
+    nbr = ft_atoi(*str);
+    while (**str >= '0' && **str <= '9');
+        *(str++);
+    return (ret);
 }
 
 void    valeur_checker(char *str, FLAGS *flags)
@@ -112,7 +111,7 @@ void    valeur_checker(char *str, FLAGS *flags)
             flags->sharp = 1;
         else if (*str == ' ')
             flags->sp = 1;
-        else if (ft_strchr("123456789", *str))
+        else if (*str >= '1' && *str <= '9')
             flags->len = len_atoi(&str);
         if (ft_strchr("cspdiuxX%", *str))
             return ;
@@ -120,9 +119,9 @@ void    valeur_checker(char *str, FLAGS *flags)
     }
 }
 
-void    flags_checker(const char *str, FLAGS *flags)
+void    flags_checker(char *str, FLAGS *flags)
 {
-    valeur_checker(const char *str, FLAGS *flags);
+    valeur_checker(str, flags);
     while (ft_strchr("cspdiuxX%-0123456789+.# ", *str))
     {
         if (*str == '%')
@@ -147,4 +146,12 @@ void    flags_checker(const char *str, FLAGS *flags)
             return ;
         str++;
     }
+}
+
+int     ft_printf(const char *str, ...)
+{
+    va_list args;
+
+    va_start(str, args);
+    
 }
