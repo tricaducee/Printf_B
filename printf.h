@@ -234,26 +234,45 @@ void	ft_putnbr_fd(int n, int fd)
 	putnbr(n * pn, fd);
 }
 
+void	putc_loop(char c, int repeat)
+{
+	int	i;
+
+	i = 0;
+	while (i < repeat)
+	{
+		write(1, &c, 1);
+		i++;
+	}
+}
+
 int		print_d(int nbr, FLAGS *flags)
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	if (flags->len && (flags->len > flags->d || flags->len > flags->d)
+	if (flags->len && (flags->len > flags->d || flags->len > flags->point))
 	{
-		j = flags->len - flags->d;
-		if (!flags->min)
+		if (flags->len && !flags->min)
 		{
-			while (i < j)
-			{
-				write(1, " ", 1);
-				i++;
-			}
-			i = 0;
-			ft_putnbr_fd(nbr, 1);
+			if (flags->d >= flags->point)
+				putc_loop(' ', flags->len - flags->d);
+			else
+				putc_loop(' ', flags->len - flags->point);
 		}
+		if (flags->plus && nbr > 0)
+			write(1, "+", 1);
+		else if (flags->sp && nbr > 0)
+			write(1, " ", 1);
+		if (flags->point > flags->d)
+			putc_loop('0', flags->point - flags->d);
 	}
+	if (flags->plus && nbr > 0)
+		write(1, "+", 1);
+	else if (flags->sp && nbr > 0)
+		write(1, " ", 1);
+	ft_putnbr_fd(nbr, 1);
 }
 
 int		print_arg(char **str, void arg)
