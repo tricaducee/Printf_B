@@ -1,7 +1,9 @@
 
 #include <stdarg.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-typedef struct S_FLAGS
+typedef struct S_t_FLAGS
 {
 	int c;
 	int s;
@@ -17,9 +19,9 @@ typedef struct S_FLAGS
 	int sharp;
 	int sp;
 	int len;
-}					FLAGS;
+}					t_FLAGS;
 
-void    flags_set(FLAGS *flags)
+void    flags_set(t_FLAGS *flags)
 {
 	flags->c = 0;
 	flags->s = 0;
@@ -89,17 +91,17 @@ int	ft_atoi(const char *str)
 	return ((int)nbr * pn);
 }
 
-int     len_atoi(**str)
+int     len_atoi(char **str)
 {
 	int     nbr;
 
 	nbr = ft_atoi(*str);
-	while (**str >= '0' && **str <= '9');//à modifier
+	while (**str >= '0' && **str <= '9')//à modifier
 		*(str++);
 	return (nbr);
 }
 
-void    valeur_checker(char **str, FLAGS *flags)
+void    valeur_checker(char **str, t_FLAGS *flags)
 {
 	while (ft_strchr("cspdiuxX%-0123456789+.# ", **str))
 	{
@@ -123,7 +125,7 @@ void    valeur_checker(char **str, FLAGS *flags)
 	}
 }
 
-int		nbrlen(long int nbr, int base)
+int		nbrlen(long int nbr, int base, t_FLAGS *flags)
 {
 	int	i;
 	unsigned long int nbrb;
@@ -136,7 +138,7 @@ int		nbrlen(long int nbr, int base)
 	}
 	else
 	{
-		nbrb = (unsigned long nbr);
+		nbrb = (unsigned long )nbr;
 		if (flags->sp || flags->plus)
 			i++;
 		if (flags->point)
@@ -150,7 +152,7 @@ int		nbrlen(long int nbr, int base)
 	return (i + 1);
 }
 
-int		u_nbrlen(unsigned long int nbr, int base)
+int		u_nbrlen(unsigned long int nbr, int base, t_FLAGS *flags)
 {
 	unsigned int	i;
 
@@ -167,14 +169,14 @@ int		u_nbrlen(unsigned long int nbr, int base)
 	return (i + 1);
 }
 
-int		flag_s_len(char *arg)
+int		flag_s_len(char *arg, t_FLAGS *flags)
 {
 	if (flags->point <= ft_strlen(arg))
 		return (flags->point);
 	return (ft_strlen(arg));
 }
 
-void    flags_checker(char **str, FLAGS *flags, void arg)
+void    flags_checker(char **str, t_FLAGS *flags, void arg)
 {
 	valeur_checker(str, flags);
 	while (ft_strchr("cspdiuxX%-0123456789+.# ", **str))
@@ -184,27 +186,27 @@ void    flags_checker(char **str, FLAGS *flags, void arg)
 		else if (**str == 'c')
 			flags->c = 1;
 		else if (**str == 's')
-			flags->s = flag_s_len((char *)arg);
+			flags->s = flag_s_len((char *)arg, flags);
 		else if (**str == 'd' || **str == 'i')
-			flags->d = nbrlen((long int)arg, 10, 1);
+			flags->d = nbrlen((long int)arg, 10, flags);
 		else if (**str == 'u')
-			flags->u = u_nbrlen((unsigned long int)arg, 10, 0);
+			flags->u = u_nbrlen((unsigned long int)arg, 10, flags);
 		else if (**str == 'x' || **str == 'p')
-			flags->x = u_nbrlen((unsigned long int)arg, 16, 0);
+			flags->x = u_nbrlen((unsigned long int)arg, 16, flags);
 		else if (**str == 'X')
-			flags->X = u_nbrlen((unsigned long int)arg, 16, 0);
+			flags->X = u_nbrlen((unsigned long int)arg, 16, flags;
 		*(str++);
 		if (ft_strchr("cspdiuxX%", **str - 1))
 			return ;
 	}
 }
 
-int		print_c(char c, FLAGS *flags)
+int		print_c(char c, t_FLAGS *flags)
 {
 
 }
 
-int		print_s(char *s, FLAGS *flags)
+int		print_s(char *s, t_FLAGS *flags)
 {
 
 }
@@ -244,7 +246,7 @@ void	putc_loop(char c, int repeat)
 	}
 }
 
-int		print_d(int nbr, FLAGS *flags)
+int		print_d(int nbr, t_FLAGS *flags)
 {
 	int	i;
 	int	j;
@@ -275,7 +277,7 @@ int		print_d(int nbr, FLAGS *flags)
 
 int		print_arg(char **str, void arg)
 {
-	FLAGS	flags;
+	t_FLAGS	flags;
 	int		i;
 
 	i = 0;
@@ -284,17 +286,17 @@ int		print_arg(char **str, void arg)
 	if (flags->pourcent)
 		i = write(1, "%", 1);
 	else if (flags->c)
-		i = print_c((int)arg, flags);
+		i = print_c((int)arg, &flags);
 	else if (flags->s)
-		i = print_s((char *)arg, flags);
+		i = print_s((char *)arg, &flags);
 	else if (flags->p || flags->x)
-		i = print_x((unsigned int)arg, flags);
+		i = print_x((unsigned int)arg, &flags);
 	else if (flags->d)
 		i = print_d((int)arg, flags);
 	else if (flags->u)
-		i = print_u((unsigned int)arg, flags);
+		i = print_u((unsigned int)arg, &flags);
 	else if (flags->X)
-		i = print_X((unsigned int)arg, flags);
+		i = print_X((unsigned int)arg, &flags);
 	return (i);
 }
 
@@ -315,4 +317,10 @@ int		ft_printf(const char *str, ...)
 	}
 	va_end(args);
 	return (i);
+}
+
+int main()
+{
+	ft_printf("%d", 5);
+	return (0);
 }
