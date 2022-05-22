@@ -102,36 +102,7 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (0);
 }
-/*
-int	ft_atoi(const char *str)
-{
-	int				pn;
-	unsigned int	nbr;
-	int				i;
 
-	pn = 1;
-	nbr = 0;
-	i = 0;
-	while (*str == ' ' || (*str >= '\t' && *str <= '\r'))
-		str++;
-	if (*str == '-' || *str == '+')
-		if (*(str++) == '-')
-			pn *= -1;
-	while (*str >= '0' && *str <= '9')
-	{
-		nbr = nbr * 10 + (*(str++) - '0');
-		i++;
-	}
-	if (i > 10)
-	{
-		if (pn < 0)
-			return (0);
-		else
-			return (-1);
-	}
-	return ((int)nbr * pn);
-}
-*/
 int	len_atoi(const char *str, int *i)
 {
 	unsigned int	nbr;
@@ -148,7 +119,7 @@ int	len_atoi(const char *str, int *i)
 	return (nbr);
 }
 
-void	valeur_checker(const char *str, t_flags *flags, int *i)
+void	value_check(const char *str, t_flags *flags, int *i)
 {
 	while (ft_strchr("-0123456789+.# p", str[*i]))
 	{
@@ -163,9 +134,9 @@ void	valeur_checker(const char *str, t_flags *flags, int *i)
 		else if (str[*i] == ' ')
 			flags->sp = 1;
 		else if (str[*i] >= '1' && str[*i] <= '9' && !flags->point)
-			flags->len = len_atoi(str, i); //nfp
+			flags->len = len_atoi(str, i);
 		else if (str[*i] == '.')
-			flags->point = len_atoi(str, i); //nfp
+			flags->point = len_atoi(str, i);
 		if (str[*i] == 'p')
 			break ;
 		*i += 1;
@@ -199,7 +170,7 @@ int	nbrlen(long int nbr, int base, t_flags *flags)
 	return (i + 1);
 }
 
-int	u_nbrlen(unsigned int nbr, int base, t_flags *flags)
+int	u_nbrlen_base(unsigned int nbr, int base, t_flags *flags)
 {
 	unsigned int	i;
 
@@ -243,13 +214,13 @@ void	ft_putstr_l(char *s, int len)
 		write(1, s + i++, 1);
 }
 
-void	putnbr(unsigned int n)
+void	rec_putnbr(unsigned int n)
 {
 	unsigned int	nb;
 
 	nb = n;
 	if (n > 9)
-		putnbr(n / 10);
+		rec_putnbr(n / 10);
 	ft_putchar(nb % 10 + '0');
 }
 
@@ -263,16 +234,16 @@ void	ft_putnbr(int n)
 		ft_putchar('-');
 		pn *= -1;
 	}
-	putnbr(n * pn);
+	rec_putnbr(n * pn);
 }
 
-void	ft_putnbr_base(unsigned int n, char *str, int base)
+void	ft_putnbr_base_u(unsigned int n, char *str, int base)
 {
 	unsigned int	nb;
 
 	nb = n;
 	if (n >= base)
-		ft_putnbr_base(n / base, str, base);
+		ft_putnbr_base_u(n / base, str, base);
 	ft_putchar(str[nb % base]);
 }
 
@@ -283,11 +254,10 @@ int	print_c(t_flags *flags, int c)
 		ft_putchar(c);
 	else if (!c && flags->sp)
 		ft_putchar(' ');
-	//print_flags(flags);
 	return (flags->c);
 }
 
-void	putc_loop(char c, int len)
+void	repeat_putchar(char c, int len)
 {
 	while (len > 0)
 	{
@@ -302,30 +272,29 @@ int	print_s(t_flags *flags, char *s)
 	if (!flags->min && flags->len > flags->s)
 	{
 		if (flags->zero)
-			putc_loop('0', flags->len - flags->s);
+			repeat_putchar('0', flags->len - flags->s);
 		else
-			putc_loop(' ', flags->len - flags->s);
+			repeat_putchar(' ', flags->len - flags->s);
 	}
 	if (flags->point && (flags->point < flags->s))
 		ft_putstr_l(s, flags->point);
 	else
 		ft_putstr_l(s, flags->s);
 	if (flags->min && flags->len > flags->s)
-		putc_loop(' ', flags->len - flags->s);
-	//print_flags(flags);
+		repeat_putchar(' ', flags->len - flags->s);
 	if (flags->len <= flags->s)
 		return (flags->s);
 	return (flags->len);
 }
 
-void	print_nlen(t_flags *flags, int c)
+void	repeat_putc_for_d(t_flags *flags, int c)
 {
 	if (flags->len > flags->d || (flags->point > flags->d && flags->len > flags->point))
 	{
 		if (flags->point > flags->d)
-			putc_loop(c, flags->len - flags->point);
+			repeat_putchar(c, flags->len - flags->point);
 		else
-			putc_loop(c, flags->len - flags->d);
+			repeat_putchar(c, flags->len - flags->d);
 	}
 }
 
@@ -347,17 +316,16 @@ int	print_d(t_flags *flags, int d)
 		c = '0';
 	flags->d = nbrlen(d, 10, flags);
 	if (!flags->min && !flags->zero)
-		print_nlen(flags, c);
+		repeat_putc_for_d(flags, c);
 	if (flags->d > 0)
 		put_sign(flags);
 	if (!flags->min && flags->zero)
-		print_nlen(flags, c);
+		repeat_putc_for_d(flags, c);
 	if (flags->point > flags->d)
-			putc_loop('0', flags->point - flags->d);
+			repeat_putchar('0', flags->point - flags->d);
 	ft_putnbr(d);
 	if (flags->min)
-		print_nlen(flags, c);
-	//print_flags(flags);
+		repeat_putc_for_d(flags, c);
 	if (flags->len > flags->d && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->d)
@@ -365,14 +333,14 @@ int	print_d(t_flags *flags, int d)
 	return (flags->d);
 }
 
-void	print_unlen(t_flags *flags, int c)
+void	repeat_putc_for_u(t_flags *flags, int c)
 {
 	if (flags->len > flags->u || (flags->point > flags->u && flags->len > flags->point))
 	{
 		if (flags->point > flags->u)
-			putc_loop(c, flags->len - flags->point);
+			repeat_putchar(c, flags->len - flags->point);
 		else
-			putc_loop(c, flags->len - flags->u);
+			repeat_putchar(c, flags->len - flags->u);
 	}
 }
 
@@ -384,15 +352,14 @@ int	print_u(t_flags *flags, unsigned int u)
 		c = ' ';
 	else
 		c = '0';
-	flags->u = u_nbrlen(u, 10, flags);
+	flags->u = u_nbrlen_base(u, 10, flags);
 	if (!flags->min && !flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->u)
-			putc_loop('0', flags->point - flags->u);
-	ft_putnbr_base(u, "0123456789", 10);
-	//print_flags(flags);
+			repeat_putchar('0', flags->point - flags->u);
+	ft_putnbr_base_u(u, "0123456789", 10);
 	if (flags->min)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 		if (flags->len > flags->u && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->u)
@@ -408,19 +375,18 @@ int	print_x(t_flags *flags, unsigned int x)
 		c = ' ';
 	else
 		c = '0';
-	flags->x = u_nbrlen(x, 16, flags);
+	flags->x = u_nbrlen_base(x, 16, flags);
 	if (!flags->min && !flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->x > 0 && flags->sharp)
 		ft_putstr("0x");
 	if (!flags->min && flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->x)
-			putc_loop('0', flags->point - flags->x);
-	ft_putnbr_base(x, "0123456789abcdef", 16);
+			repeat_putchar('0', flags->point - flags->x);
+	ft_putnbr_base_u(x, "0123456789abcdef", 16);
 	if (flags->min)
-		print_unlen(flags, c);
-	//print_flags(flags);
+		repeat_putc_for_u(flags, c);
 	if (flags->len > flags->x && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->x)
@@ -436,19 +402,18 @@ int	print_upx(t_flags *flags, unsigned int upx)
 		c = ' ';
 	else
 		c = '0';
-	flags->upx = u_nbrlen(upx, 16, flags);
+	flags->upx = u_nbrlen_base(upx, 16, flags);
 	if (!flags->min && !flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->upx > 0 && flags->sharp)
 		ft_putstr("0X");
 	if (!flags->min && flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->upx)
-			putc_loop('0', flags->point - flags->upx);
-	ft_putnbr_base(upx, "0123456789ABCDEF", 16);
+			repeat_putchar('0', flags->point - flags->upx);
+	ft_putnbr_base_u(upx, "0123456789ABCDEF", 16);
 	if (flags->min)
-		print_unlen(flags, c);
-	//print_flags(flags);
+		repeat_putc_for_u(flags, c);
 	if (flags->len > flags->upx && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->upx)
@@ -464,19 +429,18 @@ int	print_o(t_flags *flags, unsigned int o)
 		c = ' ';
 	else
 		c = '0';
-	flags->o = u_nbrlen(o, 8, flags);
+	flags->o = u_nbrlen_base(o, 8, flags);
 	if (!flags->min && !flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->o > 0 && flags->sharp)
 		ft_putchar('0');
 	if (!flags->min && flags->zero)
-		print_unlen(flags, c);
+		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->o)
-			putc_loop('0', flags->point - flags->o);
-	ft_putnbr_base(o, "01234567", 8);
+			repeat_putchar('0', flags->point - flags->o);
+	ft_putnbr_base_u(o, "01234567", 8);
 	if (flags->min)
-		print_unlen(flags, c);
-	//print_flags(flags);
+		repeat_putc_for_u(flags, c);
 	if (flags->len > flags->o && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->o)
@@ -494,19 +458,18 @@ int	print_nflags(t_flags *flags)
 			c = '0';
 		else
 			c = ' ';
-		putc_loop(c, flags->len);
+		repeat_putchar(c, flags->len);
 		return (flags->len);
 	}
-	//print_flags(flags);
 	return (0);
 }
 
-int	print_arg(const char *str, va_list args, int *i) //Je peux envoyer pour print depuis ici, j'ai déjà toutes les infos
+int	flags_check(const char *str, va_list args, int *i)
 {
 	t_flags	flags;
 
 	flags_set(&flags);
-	valeur_checker(str, &flags, i);
+	value_check(str, &flags, i);
 	if (str[*i] == '%')
 		flags.pourcent = 1;
 	else if (str[*i] == 'c')
@@ -524,21 +487,8 @@ int	print_arg(const char *str, va_list args, int *i) //Je peux envoyer pour prin
 	else if (str[*i] == 'o')
 		return (print_o(&flags, va_arg(args, unsigned int)));
 	return (print_nflags(&flags));
-//	i++;
 }
-/*
-int	print_arg(va_list args, const char *str)
-{
-	int		ret;
-	t_flags	flags;
 
-	ret = 0;
-	flags_set(&flags);
-	ret = flags_checker(str, &flags, args);
-	print_flags(&flags); //tester
-	return (ret);
-}
-*/
 int	ft_printf(const char *str, ...)
 {
 	va_list	args;
@@ -553,7 +503,7 @@ int	ft_printf(const char *str, ...)
 		if (str[i] == '%')
 		{
 			i++;
-			cmpt += print_arg(str, args, &i);
+			cmpt += flags_check(str, args, &i);
 			if (ft_strchr("scpdiuxXo%", str[i]))
 				i++;
 		}
