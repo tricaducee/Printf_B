@@ -40,7 +40,7 @@ void gets_nb(char *str)
 	str[i] = 0;
 }
 
-int main(int argc, char **argv)
+int main()
 {
 	int selecteur = 1;
 	int i = 0;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
 	while (selecteur != 0)
 	{
-		printf("\n\nChoisie le type d'entrée :\n\n0. quitter\n1. int\n2. float\n3. unsigned int\n4. char\n5. string\n6. NULL\n\nVotre choix: ");
+		printf("\n\nChoisie le type d'entrée :\n\n0. quitter\n1. int\n2. float\n3. unsigned int\n4. char\n5. string\n6. NULL\n7. Tripouille\n\nVotre choix: ");
 		scanf("%d", &selecteur);
 		viderBuffer();
 		if (selecteur > 0 && selecteur <7)
@@ -130,6 +130,15 @@ int main(int argc, char **argv)
 				printf("\nRetour original : %d", original_ret);
 				printf("\n\nFt version :\n"); 
 				ft_ret = ft_printf(str, 0);
+				printf("\nRetour ft_version : %d", ft_ret);
+				break;
+			case 7:
+				printf("\n\nTest 1 :");
+ 				printf("\n\nOriginal :\n"); 
+				original_ret = printf("%%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %c%%", 'A', "42", 42, 42 ,42 , 42, 42, 'B', "-42", -42, -42 ,-42 ,-42, 42, 'C', "0", 0, 0 ,0 ,0, 42, 0);
+				printf("\nRetour original : %d", original_ret);
+				printf("\n\nFt version :\n"); 
+				ft_ret = ft_printf("%%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %%%c%%%s%%%d%%%i%%%u%%%x%%%X%%%% %c%%", 'A', "42", 42, 42 ,42 , 42, 42, 'B', "-42", -42, -42 ,-42 ,-42, 42, 'C', "0", 0, 0 ,0 ,0, 42, 0);
 				printf("\nRetour ft_version : %d", ft_ret);
 				break;
 			default:

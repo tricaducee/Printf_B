@@ -16,17 +16,28 @@ RM = rm -rf
 
 SRC = $(wildcard *.c)
 
+SRCTEST = $(wildcard ./tester/*.c)
+
 OBJ = $(SRC:.c=.o)
+
+OBJTEST = $(SRCTEST:.c=.o)
 
 NAME = libftprintf.a
 
+NAMETEST = MyTester
+
 CC = gcc
+
+AR = ar rcs
 
 CFLAGS = -Wall -Werror -Wextra
 
 $(NAME) : $(OBJ)
-	ar rcs $@ $(OBJ)
+	$(AR) $@ $^
 # $@ nom cible $< nom premiere dependance $^ toutes les dependances $? dependance plus recente que la cible $* nom fichier sans extension
+
+$(NAMETEST) : $(OBJ) $(OBJTEST)
+	$(CC) -o $@ $^
 
 %.o : %.c
 	$(CC) $(CFLAGS) -o $@ -c $<
