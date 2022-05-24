@@ -28,9 +28,6 @@ void	ft_putnbr(int n)
 
 	pn = 1;
 	if (n < 0)
-	{
-		ft_putchar('-');
 		pn *= -1;
-	}
 	rec_putnbr(n * pn);
 }

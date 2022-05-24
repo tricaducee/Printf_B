@@ -1,30 +1,26 @@
-ECHO = @echo -e
+ECHO = @echo
 
-RED = /033[31m
+PRINT = @printf
 
-GREEN = /033[32m
+RED = \033[31m
 
-YELLOW = /033[33m
+GREEN = \033[32m
 
-BLINK = /033[6m
+YELLOW = \033[33m
 
-RESETTXT = /033[0m
+INVERT = \033[7m
 
-BOLD = 0/33[1m
+RESETTXT = \033[0m
+
+BOLD = \033[1m
 
 RM = rm -rf
 
 SRC = $(wildcard *.c)
 
-SRCTEST = $(wildcard ./tester/*.c)
-
 OBJ = $(SRC:.c=.o)
 
-OBJTEST = $(SRCTEST:.c=.o)
-
 NAME = libftprintf.a
-
-NAMETEST = MyTester
 
 CC = gcc
 
@@ -33,25 +29,28 @@ AR = ar rcs
 CFLAGS = -Wall -Werror -Wextra
 
 $(NAME) : $(OBJ)
-	$(AR) $@ $^
-# $@ nom cible $< nom premiere dependance $^ toutes les dependances $? dependance plus recente que la cible $* nom fichier sans extension
-
-$(NAMETEST) : $(OBJ) $(OBJTEST)
-	$(CC) -o $@ $^
+	$(ECHO) "$(YELLOW)Compilation de libftprintf.a...$(RESETTXT)"
+	@$(AR) $@ $^
+	$(ECHO)  "$(GREEN)$(BOLD)Compilation Terminer !!!$(RESETTXT)"
 
 %.o : %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(PRINT) "$(YELLOW)Generation des objets...$(RESETTXT)\r"
+	@$(CC) $(CFLAGS) -o $@ -c $<
 
 bonus : $(NAME)
 
 all : $(NAME)
 
-clean : $(OBJ)
-	$(RM) $^
+clean :
+	$(ECHO) "$(RED)Suppression des objets...$(RESETTXT)"
+	@$(RM) $(OBJ)
+	$(ECHO) "$(GREEN)$(BOLD)Terminer !$(RESETTXT)"
 
 fclean : clean
-	$(RM) $(NAME)
+	$(ECHO) "$(RED)Suppression de libftprintf.a...$(RESETTXT)"
+	@$(RM) $(NAME)
+	$(ECHO) "$(GREEN)$(BOLD)Terminer !$(RESETTXT)"
 
-re : fclean $(NAME)
+re : fclean all
 
 .PHONY: all re bonus clean fclean

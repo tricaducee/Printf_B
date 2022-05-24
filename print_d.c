@@ -24,32 +24,34 @@ void	repeat_putc_for_d(t_flags *flags, int c)
 	}
 }
 
-void	put_sign(t_flags *flags)
+void	put_sign(t_flags *flags, int d)
 {
-	if (flags->plus)
+	if (d >= 0 && flags->plus)
 		ft_putchar('+');
-	else if (flags->sp)
+	else if (d >= 0 && flags->sp)
 		ft_putchar(' ');
+	else if (d < 0)
+		ft_putchar('-');
 }
 
 int	print_d(t_flags *flags, int d)
 {
 	int	c;
 
-	if (!flags->zero || flags->point)
+	flags->d = nbrlen(d, 10, flags);
+	if (!flags->zero || flags->point || !flags->d)
 		c = ' ';
 	else
 		c = '0';
-	flags->d = nbrlen(d, 10, flags);
-	if (!flags->min && !flags->zero)
+	if (!flags->min && (!flags->zero || flags->point))
 		repeat_putc_for_d(flags, c);
-	if (flags->d > 0)
-		put_sign(flags);
-	if (!flags->min && flags->zero)
+	put_sign(flags, d);
+	if (!flags->min && (flags->zero && !flags->point))
 		repeat_putc_for_d(flags, c);
 	if (flags->point > flags->d)
 		repeat_putchar('0', flags->point - flags->d);
-	ft_putnbr(d);
+	if (flags->d)
+		ft_putnbr(d);
 	if (flags->min)
 		repeat_putc_for_d(flags, c);
 	if (flags->len > flags->d && flags->len > flags->point)

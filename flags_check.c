@@ -19,6 +19,7 @@ void	flags_set(t_flags *flags)
 	flags->d = 0;
 	flags->u = 0;
 	flags->x = 0;
+	flags->p = 0;
 	flags->o = 0;
 	flags->upx = 0;
 	flags->pourcent = 0;
@@ -41,12 +42,16 @@ void	value_check(const char *str, t_flags *flags, int *i)
 			flags->zero = 1;
 		else if (str[*i] == '+')
 			flags->plus = 1;
-		else if (str[*i] == '#' || str[*i] == 'p')
+		else if (str[*i] == '#')
 			flags->sharp = 1;
+		else if (str[*i] == 'p')
+			flags->p = 1;
 		else if (str[*i] == ' ')
 			flags->sp = 1;
 		else if (str[*i] >= '1' && str[*i] <= '9' && !flags->point)
 			flags->len = len_atoi(str, i);
+		else if (str[*i] == '.' && (str[*i + 1] > '9' || str[*i + 1] < '1'))
+			flags->zpoint = 1;
 		else if (str[*i] == '.')
 			flags->point = len_atoi(str, i);
 		if (str[*i] == 'p')
@@ -71,8 +76,10 @@ int	flags_check(const char *str, va_list args, int *i)
 		return (print_d(&flags, va_arg(args, int)));
 	else if (str[*i] == 'u')
 		return (print_u(&flags, va_arg(args, unsigned int)));
-	else if (str[*i] == 'x' || str[*i] == 'p')
+	else if (str[*i] == 'x')
 		return (print_x(&flags, va_arg(args, unsigned int)));
+	else if (str[*i] == 'p')
+		return (print_x(&flags, va_arg(args, unsigned long int)));
 	else if (str[*i] == 'X')
 		return (print_upx(&flags, va_arg(args, unsigned int)));
 	else if (str[*i] == 'o')

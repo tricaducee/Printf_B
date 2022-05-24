@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-void	ft_putnbr_base_u(unsigned int n, char *str, unsigned int base)
+void	ft_putnbr_base_u(unsigned long int n, char *str, unsigned long int base)
 {
 	unsigned int	nb;
 

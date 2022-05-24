@@ -12,12 +12,14 @@
 
 #include "ft_printf.h"
 
-int	u_nbrlen_base(unsigned int nbr, unsigned int base, t_flags *flags)
+int	u_nbrlen_base(unsigned long int nbr, unsigned long int base, t_flags *flags)
 {
 	unsigned int	i;
 
 	i = 0;
-	if (flags->sharp && nbr > 0 && base > 10)
+	if (flags->zpoint && !nbr)
+		return (0);
+	if ((flags->sharp && nbr > 0 && base > 10) || flags->p)
 	{
 		if (flags->point)
 			flags->point += 2;

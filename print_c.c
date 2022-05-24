@@ -22,10 +22,7 @@ int	print_c(t_flags *flags, int c)
 		else
 			repeat_putchar(' ', flags->len - flags->c);
 	}
-	if (c)
-		ft_putchar(c);
-	//else if (!c && flags->sp)
-	//	ft_putchar(' ');
+	ft_putchar(c);
 	if (flags->min && flags->len > flags->c)
 		repeat_putchar(' ', flags->len - flags->c);
 	if (flags->len <= flags->c)

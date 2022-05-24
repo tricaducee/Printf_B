@@ -12,20 +12,33 @@
 
 #include "ft_printf.h"
 
+void	repeat_putc_for_u(t_flags *flags, int c)
+{
+	if (flags->len > flags->u
+		|| (flags->point > flags->u && flags->len > flags->point))
+	{
+		if (flags->point > flags->u)
+			repeat_putchar(c, flags->len - flags->point);
+		else
+			repeat_putchar(c, flags->len - flags->u);
+	}
+}
+
 int	print_u(t_flags *flags, unsigned int u)
 {
 	int	c;
 
-	if (!flags->zero || flags->point)
+	flags->u = u_nbrlen_base(u, 10, flags);
+	if (!flags->zero || flags->point || !flags->u)
 		c = ' ';
 	else
 		c = '0';
-	flags->u = u_nbrlen_base(u, 10, flags);
-	if (!flags->min && !flags->zero)
+	if (!flags->min)
 		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->u)
 		repeat_putchar('0', flags->point - flags->u);
-	ft_putnbr_base_u(u, "0123456789", 10);
+	if (flags->u)
+		ft_putnbr_base_u(u, "0123456789", 10);
 	if (flags->min)
 		repeat_putc_for_u(flags, c);
 	if (flags->len > flags->u && flags->len > flags->point)

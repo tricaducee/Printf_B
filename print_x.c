@@ -12,26 +12,39 @@
 
 #include "ft_printf.h"
 
-int	print_x(t_flags *flags, unsigned int x)
+void	repeat_putc_for_x(t_flags *flags, int c)
+{
+	if (flags->len > flags->x
+		|| (flags->point > flags->x && flags->len > flags->point))
+	{
+		if (flags->point > flags->x)
+			repeat_putchar(c, flags->len - flags->point);
+		else
+			repeat_putchar(c, flags->len - flags->x);
+	}
+}
+
+int	print_x(t_flags *flags, unsigned long int x)
 {
 	int	c;
 
-	if (!flags->zero || flags->point)
+	flags->x = u_nbrlen_base(x, 16, flags);
+	if (!flags->zero || flags->point || !flags->x)
 		c = ' ';
 	else
 		c = '0';
-	flags->x = u_nbrlen_base(x, 16, flags);
 	if (!flags->min && !flags->zero)
-		repeat_putc_for_u(flags, c);
-	if (flags->x > 0 && flags->sharp)
+		repeat_putc_for_x(flags, c);
+	if ((x > 0 && flags->sharp) || flags->p)
 		ft_putstr("0x");
 	if (!flags->min && flags->zero)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_x(flags, c);
 	if (flags->point > flags->x)
 		repeat_putchar('0', flags->point - flags->x);
-	ft_putnbr_base_u(x, "0123456789abcdef", 16);
+	if (flags->x)
+		ft_putnbr_base_u(x, "0123456789abcdef", 16);
 	if (flags->min)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_x(flags, c);
 	if (flags->len > flags->x && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->x)

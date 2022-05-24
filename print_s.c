@@ -12,17 +12,35 @@
 
 #include "ft_printf.h"
 
+void	ft_strcpy(char *dst, const char *src)
+{
+	while (*src)
+	{
+		*dst = *src;
+		dst++;
+		src++;
+	}
+	*dst = 0;
+}
+
 int	flag_s_len(char *s, t_flags *flags)
 {
-	if (flags->point && (flags->point <= ft_strlen(s)))
+	if (flags->zpoint)
+		return (0);
+	else if (flags->point > 0 && (flags->point <= ft_strlen(s)))
 		return (flags->point);
 	return (ft_strlen(s));
 }
 
 int	print_s(t_flags *flags, char *s)
 {
+	char	n_string[7];
+
 	if (!s)
-		return (write(1, "(null)", 6));
+	{
+		ft_strcpy(n_string, "(null)");
+		s = n_string;
+	}
 	flags->s = flag_s_len(s, flags);
 	if (!flags->min && flags->len > flags->s)
 	{
@@ -31,10 +49,7 @@ int	print_s(t_flags *flags, char *s)
 		else
 			repeat_putchar(' ', flags->len - flags->s);
 	}
-	if (flags->point && (flags->point < flags->s))
-		ft_putstr_l(s, flags->point);
-	else
-		ft_putstr_l(s, flags->s);
+	ft_putstr_l(s, flags->s);
 	if (flags->min && flags->len > flags->s)
 		repeat_putchar(' ', flags->len - flags->s);
 	if (flags->len <= flags->s)

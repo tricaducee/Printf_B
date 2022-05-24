@@ -16,20 +16,21 @@ int	print_o(t_flags *flags, unsigned int o)
 {
 	int	c;
 
-	if (!flags->zero || flags->point)
+	flags->o = u_nbrlen_base(o, 8, flags);
+	if (!flags->zero || flags->point || !flags->o)
 		c = ' ';
 	else
 		c = '0';
-	flags->o = u_nbrlen_base(o, 8, flags);
 	if (!flags->min && !flags->zero)
 		repeat_putc_for_u(flags, c);
-	if (flags->o > 0 && flags->sharp)
+	if (o > 0 && flags->sharp)
 		ft_putchar('0');
 	if (!flags->min && flags->zero)
 		repeat_putc_for_u(flags, c);
 	if (flags->point > flags->o)
 		repeat_putchar('0', flags->point - flags->o);
-	ft_putnbr_base_u(o, "01234567", 8);
+	if (flags->o)
+		ft_putnbr_base_u(o, "01234567", 8);
 	if (flags->min)
 		repeat_putc_for_u(flags, c);
 	if (flags->len > flags->o && flags->len > flags->point)
