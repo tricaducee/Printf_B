@@ -1,41 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   len_atoi.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrolle <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/21 13:10:08 by hrolle            #+#    #+#             */
-/*   Updated: 2022/05/23 17:14:15 by hrolle           ###   ########.fr       */
+/*   Created: 2022/05/23 17:16:37 by hrolle            #+#    #+#             */
+/*   Updated: 2022/05/23 17:16:44 by hrolle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *str, ...)
+int	len_atoi(const char *str, int *i)
 {
-	va_list	args;
-	int		i;
-	int		cmpt;
+	unsigned int	nbr;
 
-	va_start(args, str);
-	i = 0;
-	cmpt = 0;
-	while (str[i])
+	nbr = 0;
+	if (str[*i] == '.')
+		*i += 1;
+	while (str[*i] >= '0' && str[*i] <= '9')
 	{
-		if (str[i] == '%')
-		{
-			i++;
-			cmpt += flags_check(str, args, &i);
-			if (str[i] && ft_strchr("scpdiuxXo%", str[i]))
-				i++;
-		}
-		else if (str[i])
-		{
-			write(1, &str[i++], 1);
-			cmpt++;
-		}
+		nbr = (nbr * 10) + (str[*i] - '0');
+		*i += 1;
 	}
-	va_end(args);
-	return (cmpt);
+	*i -= 1;
+	return (nbr);
 }

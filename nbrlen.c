@@ -1,41 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   nbrlen.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrolle <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/21 13:10:08 by hrolle            #+#    #+#             */
-/*   Updated: 2022/05/23 17:14:15 by hrolle           ###   ########.fr       */
+/*   Created: 2022/05/23 17:16:51 by hrolle            #+#    #+#             */
+/*   Updated: 2022/05/23 17:16:58 by hrolle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *str, ...)
+int	nbrlen(long int nbr, unsigned int base, t_flags *flags)
 {
-	va_list	args;
-	int		i;
-	int		cmpt;
+	unsigned int	i;
+	unsigned int	nbrb;
 
-	va_start(args, str);
 	i = 0;
-	cmpt = 0;
-	while (str[i])
+	if (nbr < 0)
 	{
-		if (str[i] == '%')
-		{
-			i++;
-			cmpt += flags_check(str, args, &i);
-			if (str[i] && ft_strchr("scpdiuxXo%", str[i]))
-				i++;
-		}
-		else if (str[i])
-		{
-			write(1, &str[i++], 1);
-			cmpt++;
-		}
+		nbrb = nbr * -1;
+		i++;
 	}
-	va_end(args);
-	return (cmpt);
+	else
+	{
+		nbrb = (unsigned long )nbr;
+		if (flags->sp || flags->plus)
+			i++;
+		if (flags->point)
+			flags->point += 1;
+	}
+	while (nbrb >= base)
+	{
+		nbrb /= base;
+		i++;
+	}
+	return (i + 1);
 }

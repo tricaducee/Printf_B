@@ -1,41 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.c                                        :+:      :+:    :+:   */
+/*   repeat_putc_for_u.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrolle <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/21 13:10:08 by hrolle            #+#    #+#             */
-/*   Updated: 2022/05/23 17:14:15 by hrolle           ###   ########.fr       */
+/*   Created: 2022/05/23 17:19:44 by hrolle            #+#    #+#             */
+/*   Updated: 2022/05/23 17:19:48 by hrolle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int	ft_printf(const char *str, ...)
+void	repeat_putc_for_u(t_flags *flags, int c)
 {
-	va_list	args;
-	int		i;
-	int		cmpt;
-
-	va_start(args, str);
-	i = 0;
-	cmpt = 0;
-	while (str[i])
+	if (flags->len > flags->u
+		|| (flags->point > flags->u && flags->len > flags->point))
 	{
-		if (str[i] == '%')
-		{
-			i++;
-			cmpt += flags_check(str, args, &i);
-			if (str[i] && ft_strchr("scpdiuxXo%", str[i]))
-				i++;
-		}
-		else if (str[i])
-		{
-			write(1, &str[i++], 1);
-			cmpt++;
-		}
+		if (flags->point > flags->u)
+			repeat_putchar(c, flags->len - flags->point);
+		else
+			repeat_putchar(c, flags->len - flags->u);
 	}
-	va_end(args);
-	return (cmpt);
 }
