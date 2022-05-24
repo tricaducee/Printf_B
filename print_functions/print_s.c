@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../HEADER/ft_printf.h"
 
 void	ft_strcpy(char *dst, const char *src)
 {

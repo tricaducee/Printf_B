@@ -47,7 +47,7 @@ void	ft_strcpy(char *dst, const char *src);
 size_t	ft_strlen(const char *s);
 int		nbrlen(long int nbr, unsigned int base, t_flags *flags);
 int		cmpt_nbr_c(unsigned int nbr, unsigned int base, unsigned int i);
-int		u_nbrlen_base(unsigned long int nbr, unsigned long int base, t_flags *flags);
+int		u_nbrlen_base(unsigned long nbr, unsigned long base, t_flags *flags);
 int		flag_s_len(char *s, t_flags *flags);
 int		len_atoi(const char *str, int *i);
 
@@ -55,7 +55,7 @@ void	ft_putstr(char *s);
 void	ft_putstr_l(char *s, int len);
 void	rec_putnbr(unsigned int n);
 void	ft_putnbr(int n);
-void	ft_putnbr_base_u(unsigned long int n, char *str, unsigned long int base);
+void	ft_putnbr_base_u(unsigned long n, char *str, unsigned long base);
 void	ft_putchar(char c);
 void	repeat_putchar(char c, int len);
 void	repeat_putc_for_u(t_flags *flags, int c);

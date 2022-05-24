@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../HEADER/ft_printf.h"
 
 int	len_atoi(const char *str, int *i)
 {

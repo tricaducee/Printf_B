@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../HEADER/ft_printf.h"
 
 int	print_o(t_flags *flags, unsigned int o)
 {

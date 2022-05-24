@@ -1,23 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hrolle <marvin@42lausanne.ch>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/23 17:16:24 by hrolle            #+#    #+#             */
-/*   Updated: 2022/05/23 17:16:29 by hrolle           ###   ########.fr       */
+/*   Created: 2022/05/23 17:15:00 by hrolle            #+#    #+#             */
+/*   Updated: 2022/05/23 17:15:07 by hrolle           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "../HEADER/ft_printf.h"
 
-size_t	ft_strlen(const char *s)
+void	rec_putnbr(unsigned int n)
 {
-	int	i;
+	unsigned int	nb;
 
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
+	nb = n;
+	if (n > 9)
+		rec_putnbr(n / 10);
+	ft_putchar(nb % 10 + '0');
+}
+
+void	ft_putnbr(int n)
+{
+	int	pn;
+
+	pn = 1;
+	if (n < 0)
+		pn *= -1;
+	rec_putnbr(n * pn);
 }

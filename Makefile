@@ -16,7 +16,7 @@ BOLD = \033[1m
 
 RM = rm -rf
 
-SRC = $(wildcard *.c)
+SRC = $(wildcard */*.c)
 
 OBJ = $(SRC:.c=.o)
 
