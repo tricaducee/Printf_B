@@ -72,6 +72,7 @@ int		print_u(t_flags *flags, unsigned int u);
 int		print_x(t_flags *flags, unsigned long int x);
 int		print_upx(t_flags *flags, unsigned long int upx);
 int		print_o(t_flags *flags, unsigned int o);
+int		print_len(t_flags *flags, int c);
 
 int		ft_printf(const char *str, ...);
 

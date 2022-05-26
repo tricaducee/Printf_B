@@ -27,6 +27,7 @@ void	flags_set(t_flags *flags)
 	flags->zero = 0;
 	flags->plus = 0;
 	flags->point = 0;
+	flags->zpoint = 0;
 	flags->sharp = 0;
 	flags->sp = 0;
 	flags->len = 0;
@@ -54,7 +55,7 @@ void	value_check(const char *str, t_flags *flags, int *i)
 			flags->zpoint = 1;
 		else if (str[*i] == '.')
 			flags->point = len_atoi(str, i);
-		if (str[*i] == 'p')
+		if (!str[*i] || str[*i] == 'p')
 			break ;
 		*i += 1;
 	}
@@ -84,5 +85,7 @@ int	flags_check(const char *str, va_list args, int *i)
 		return (print_upx(&flags, va_arg(args, unsigned int)));
 	else if (str[*i] == 'o')
 		return (print_o(&flags, va_arg(args, unsigned int)));
+	else if (str[*i])
+		return (print_len(&flags, str[*i]));
 	return (0);
 }

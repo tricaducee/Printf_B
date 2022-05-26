@@ -18,6 +18,8 @@ int	ft_printf(const char *str, ...)
 	int		i;
 	int		cmpt;
 
+	if (!str)
+		return (0);
 	va_start(args, str);
 	i = 0;
 	cmpt = 0;
@@ -27,14 +29,11 @@ int	ft_printf(const char *str, ...)
 		{
 			i++;
 			cmpt += flags_check(str, args, &i);
-			if (str[i] && ft_strchr("scpdiuxXo%", str[i]))
+			if (str[i])
 				i++;
 		}
 		else if (str[i])
-		{
-			write(1, &str[i++], 1);
-			cmpt++;
-		}
+			cmpt += write(1, &str[i++], 1);
 	}
 	va_end(args);
 	return (cmpt);
