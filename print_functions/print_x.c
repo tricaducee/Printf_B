@@ -33,11 +33,11 @@ int	print_x(t_flags *flags, unsigned long int x)
 		c = ' ';
 	else
 		c = '0';
-	if (!flags->min && !flags->zero)
+	if (!flags->min && (!flags->zero || flags->point))
 		repeat_putc_for_x(flags, c);
 	if ((x > 0 && flags->sharp) || flags->p)
 		ft_putstr("0x");
-	if (!flags->min && flags->zero)
+	if (!flags->min && flags->zero && !flags->point)
 		repeat_putc_for_x(flags, c);
 	if (flags->point > flags->x)
 		repeat_putchar('0', flags->point - flags->x);

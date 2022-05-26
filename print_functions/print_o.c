@@ -33,11 +33,11 @@ int	print_o(t_flags *flags, unsigned int o)
 		c = ' ';
 	else
 		c = '0';
-	if (!flags->min && !flags->zero)
+	if (!flags->min && (!flags->zero || flags->point))
 		repeat_putc_for_o(flags, c);
 	if (o > 0 && flags->sharp)
 		ft_putchar('0');
-	if (!flags->min && flags->zero)
+	if (!flags->min && flags->zero && !flags->point)
 		repeat_putc_for_o(flags, c);
 	if (flags->point > flags->o)
 		repeat_putchar('0', flags->point - flags->o);
