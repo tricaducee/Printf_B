@@ -1,17 +1,10 @@
 ECHO = @echo
-
 PRINT = @printf
-
 RED = \033[31m
-
 GREEN = \033[32m
-
 YELLOW = \033[33m
-
 INVERT = \033[7m
-
 RESETTXT = \033[0m
-
 BOLD = \033[1m
 
 RM = rm -rf

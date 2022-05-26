@@ -12,6 +12,18 @@
 
 #include "../HEADER/ft_printf.h"
 
+void	repeat_putc_for_o(t_flags *flags, int c)
+{
+	if (flags->len > flags->o
+		|| (flags->point > flags->o && flags->len > flags->point))
+	{
+		if (flags->point > flags->o)
+			repeat_putchar(c, flags->len - flags->point);
+		else
+			repeat_putchar(c, flags->len - flags->o);
+	}
+}
+
 int	print_o(t_flags *flags, unsigned int o)
 {
 	int	c;
@@ -22,17 +34,17 @@ int	print_o(t_flags *flags, unsigned int o)
 	else
 		c = '0';
 	if (!flags->min && !flags->zero)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_o(flags, c);
 	if (o > 0 && flags->sharp)
 		ft_putchar('0');
 	if (!flags->min && flags->zero)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_o(flags, c);
 	if (flags->point > flags->o)
 		repeat_putchar('0', flags->point - flags->o);
 	if (flags->o)
 		ft_putnbr_base_u(o, "01234567", 8);
 	if (flags->min)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_o(flags, c);
 	if (flags->len > flags->o && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->o)

@@ -12,7 +12,7 @@
 
 #include "../HEADER/ft_printf.h"
 
-int	u_nbrlen_base(unsigned long int nbr, unsigned long int base, t_flags *flags)
+int	u_nbrlen_base(unsigned long nbr, unsigned long base, t_flags *flags)
 {
 	unsigned int	i;
 
@@ -26,7 +26,11 @@ int	u_nbrlen_base(unsigned long int nbr, unsigned long int base, t_flags *flags)
 		i += 2;
 	}
 	else if (flags->sharp && nbr > 0 && base < 10)
+	{
+		if (flags->point)
+			flags->point++;
 		i++;
+	}
 	while (nbr >= base)
 	{
 		nbr /= base;

@@ -59,6 +59,7 @@ void	ft_putnbr_base_u(unsigned long n, char *str, unsigned long base);
 void	ft_putchar(char c);
 void	repeat_putchar(char c, int len);
 void	repeat_putc_for_u(t_flags *flags, int c);
+void	repeat_putc_for_o(t_flags *flags, int c);
 void	repeat_putc_for_x(t_flags *flags, int c);
 void	repeat_putc_for_upx(t_flags *flags, int c);
 void	repeat_putc_for_d(t_flags *flags, int c);
