@@ -44,7 +44,7 @@ int	print_o(t_flags *flags, unsigned int o)
 	if (flags->o)
 		ft_putnbr_base_u(o, "01234567", 8);
 	if (flags->min)
-		repeat_putc_for_o(flags, c);
+		repeat_putc_for_o(flags, ' ');
 	if (flags->len > flags->o && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->o)

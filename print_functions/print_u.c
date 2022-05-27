@@ -40,7 +40,7 @@ int	print_u(t_flags *flags, unsigned int u)
 	if (flags->u)
 		ft_putnbr_base_u(u, "0123456789", 10);
 	if (flags->min)
-		repeat_putc_for_u(flags, c);
+		repeat_putc_for_u(flags, ' ');
 	if (flags->len > flags->u && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->u)

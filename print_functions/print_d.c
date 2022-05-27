@@ -53,7 +53,7 @@ int	print_d(t_flags *flags, int d)
 	if (flags->d)
 		ft_putnbr(d);
 	if (flags->min)
-		repeat_putc_for_d(flags, c);
+		repeat_putc_for_d(flags, ' ');
 	if (flags->len > flags->d && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->d)

@@ -44,7 +44,7 @@ int	print_upx(t_flags *flags, unsigned long int upx)
 	if (flags->upx)
 		ft_putnbr_base_u(upx, "0123456789ABCDEF", 16);
 	if (flags->min)
-		repeat_putc_for_upx(flags, c);
+		repeat_putc_for_upx(flags, ' ');
 	if (flags->len > flags->upx && flags->len > flags->point)
 		return (flags->len);
 	else if (flags->point > flags->upx)
