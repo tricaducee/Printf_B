@@ -74,6 +74,13 @@ int		print_upx(t_flags *flags, unsigned long int upx);
 int		print_o(t_flags *flags, unsigned int o);
 int		print_len(t_flags *flags, int c);
 
+int		text_mod(const char *str, int *i);
+void	color(const char *str, int *i);
+void	backround(const char *str, int *i);
+void	flags_text(const char *str, int *i);
+void	bright(const char *str, int *i);
+void	bt_backround(const char *str, int *i);
+
 int		ft_printf(const char *str, ...);
 
 #endif

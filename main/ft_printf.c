@@ -32,6 +32,8 @@ int	ft_printf(const char *str, ...)
 			if (str[i])
 				i++;
 		}
+		else if (str[i] == '#')
+			cmpt += text_mod(str, &i);
 		else if (str[i])
 			cmpt += write(1, &str[i++], 1);
 	}
